@@ -12,350 +12,233 @@ date: 2018年12月23日
 <img src="/assets/img/logo.jpg" style="display: block;margin: 33px auto;"width="120" height="120" />
 经过两年的发展，已经有了新的硬件和开发能力。用户通过扫一扫、搜一下或发现周边小程序即可使用，许多城市实现了支持地铁、公交服务。
 
+<style>
+.column-space {
+    height: 40px;
+}
+</style>
 [slide]
-# 比较
+## 比较
 -----
-| 微信小程序 | H5
+| 微信小程序 | H5 | App
 :-------|:-------|:------
-触发方法 | 不能直接分享，可折中地使用图片二维码分享 | 能
-运行流畅度 | 可以方便第缓存页面和组件，切换页面时不会重新渲染 | ///问问同事
-分享到朋友圈 | 不能直接分享，可折中地使用图片二维码分享 | 能
-分享给个人和群 | 卡片式的分享界面信息也多，并且能追踪用户行为 | 分享的信息更简单
-支付能力| 仅微信支付 | 多种方式
-迭代周期| 每次提交版本都要经过微信方面的审核，且审核时间的长短很随机 | 随时发布上线
-外部限制| 从后端开始就有限制，要求域名备案 + HTTPS | 不强制 HTTP
-内容体积限制 | 2M | /// | 
+运行流畅度 | 可以方便第缓存页面和组件，切换页面时不会重新渲染，View 和 Appservice 两个线程并行执行，渲染时间快 | 可缓存页面和组件运行流畅度稍差一点 | 运行流畅度最高
+迭代周期| 每次提交版本都要经过微信方面的审核，且审核时间的长短很随机 | 随时发布上线 | 需要审核时间
+设备调用能力| 支持拍摄、多媒体、蓝牙、wifi等硬件设备 | 不支持拍摄等，可调用的硬件较少 | 设备调用能力最高
+内容体积限制 | 2M | 无限制 | 无限制
+支付能力| 仅微信支付 | 多种方式 | 多种方式
+分享到朋友圈 | 不能直接分享，可折中地使用图片二维码分享 | 能 | 不能
+分享给个人和群 | 卡片式的分享界面信息也多，并且能追踪用户行为 | 分享的信息更简单 | 不能
+<div  class="rollIn wrap">
+    <div  class="builded">
+        <img class="img1" src="/assets/img/WX20181223-190905.png" style="display: block;margin: 33px auto;" width="350" height="350" />
+        <img src="/assets/img/20181224144006.png" style="display: block;margin: 33px auto;" width="350" height="200" />
+    </div>
+</div>
 
-1|pages/ | pages/
-1|components/ | components/
+
+<style>
+.wrap {
+    position: absolute;
+    float: left;
+    /* height: 600px; */
+    top: 6%;
+    right: -48%;
+}
+.img1 {
+    margin-bottom: 60px!important;
+}
+</style>
 [slide]
-## 小程序解构
------    
-<img src="/assets/img/60302.jpeg" style="position: relative;right: -55%;max-height: 669px!important;" width="375"  />
-
-<ul class="rollIn" style="position: absolute;top: 30%;left: 42%;">
-    <li class="builded" data-index="0">窗口</li>
-    <li class="builded" data-index="1">页面</li>
-    <li class="builded" data-index="2">底部 tab 栏</li>
-    <li class="builded" data-index="3">下拉背景</li>
-</ul>
+# 小程序支持的硬件能力
     
 [slide]
 
-## 自定义组件内部选项
+## 蓝牙
 -----
-```javascript
-/* 由外部传递进来的值 */
-properties: {
-    like: {
-        type: Boolean
-    },
-    count: Number
-},
+<div class="blue-teeth-split2"></div>
+* 搜索附近的蓝牙
+* 搜索指定设备
+* 读取蓝牙发过来的数据 
+* 写数据到蓝牙 
+<div  class="wrap-20181224152030">
+    <img class="img-20181224152030" src="/assets/img/20181224152030.png" style="display: block;margin: 33px auto;" width="350" />
+</div>
 
-/* 组件自身的状态 */
-data: {
-    isLike: 'images/like.png',
-    notLike: 'images/like@dis.png',
-},
-
-created() {
-    console.log(this.properties === this.data) // true
-}
-```
- 
-> 在组建的内部声明 properties 和 data 后，小程序会在调用 created 钩子前，会合并 properties 和 data 里的所有的属性，并挂载到组件实例的 data 和 properties 属性，所以在 created 钩子里打印 this.properties === this.data 结果是true。所以要避免在 properties 和 data 里声明相同变量名。
-
-[slide]
-
-## 自定义组件的试图更新
------
-```javascript
-this.setData({
-   isLike: true,
-   countNum: 20
-})
-```
-> 使用 this.setData更新试图，小程序会把 isLike 和 countNum 属性分别挂载到 this.properties 和 this.data 下
-
-
-
-[slide]
-## 自定义组件外部传值的获取时机
------
-
-```javascript
-properties: {
-    like: {
-        type: Boolean,
-        observer(newValue, oldValue) { // 改变值后会自定调用此函数，同步数据不会执行 observer，只有异步才会执行
-            this.setData({
-                like: newValue
-            })
-        }
-    }
-},
-```
-> 如果想变异监听组建外部传递的属性，应使用 ovserver 回调
-
-
-
-[slide]
-
-## 复用自定义组件的选项
------
-
-```javascript
-// 如果多个组件拥有相同的选项，可以把公共部分提取出来：
-Component({
-    properties: {},
-    data: {},
-    created() {},
-    methodes: {},
-})
-```
-
-```javascript
-const classicBeh = Behavior({
-    properties: {
-        img: {
-        type: String,
-    },
-    created() {}
-}) 
-
-export { classicBeh }
-```
-
-```javascript
-//注册复用项
-import {classicBeh} from '../classic-beh.js'
-import {aBeh} from '../a-beh.js'
-Component({
-  behaviors: [ classicBeh, aBeh ], // 继承组件的公共属性
-  data: { }
-})
-```
-> behaviors 是个数组，说明可以继承多个父类，相同属性子类覆盖父类，最后一个父类覆盖前面的父类属性。唯独 attached 钩子，会依次执行父类的attached，最后执行子类的attached
-
-[slide]
-
-## 使用自定义组件的 slot
------
-
-```javascript
-// 开启 slot：
-Component({
-    options: {
-        multipleSlots: true
-    }
-})
-```
-
-```javascript
-// 组建内使用具名 slot 占位：
-<view class="container">
-    <slot name="after" /> 
-<view>
-```
-
-```javascript
-// wxml内使用slot：
-<v-tag>
-    <text slot="after">200</text>
-</v-tag>
-```
-
-[slide]
-
-## 自定义组件的外部样式
------
-
-```javascript
-// 这是 v-tag 组件
-Component({
-  externalClasses: ['tag-class'], // 在组建内注册外部样式名
-})
-```
-
-```html
-<!-- 在 v-tag 组件的 wxml 元素上绑定外部样式： -->
-<view bind:tap="onTap" class='container tag-class'>
-  <text>{{text}}</text>
-</view>
-```
-
-```html
-<!-- 为了改变 v-tag 组件默认的样式，在使用改组件的 wxml 元素上添加，并在 wxss 内添加样式 -->
-<v-tag tag-class="ex-tag-class"></v-tag>
-``` 
-> 有赞（Vant Weapp）组件，会提供外部样式类接口，改变组件的默认样式:
-<img src="/assets/img/20181217114005.png" style="max-height: 669px!important;" width="675"  />
-
-[slide]
-
-## hack 方式更改自定义组件样式
------
-* 有时候使用外部样式类的方式任然不足以更改第三方组件的样式，这时可以使用 hack 方式迳入组件内部样式
-<div style="height: 20px;"></div>
-```html
-<!-- 在需要覆盖样式的组件上添加样式： -->
-<v-tag bind:tap="onTap" class='hack-class' />
-```
-
-```html
-<!-- 写下 hack-class 的样式，v-tag:nth-child(1) 就是组件内部的样式 -->
-.hack-class v-tag:nth-child(1) {
-    ...
-}
-``` 
-> 组件内部的样式不可使用样式选择器获取，需要使用标签类型作为选择器
-
-[slide]
-
-## 过滤器的使用
------
-```javascript
-// 编写过滤器
-var cutLine = function(array, length) {
-    return array.slice(0, length)
-}
-module.exports = {
-    cutLine: cutLine,
-}
-```
-
-```html
-<!-- 然后在 .wxml 里导入和使用： -->
-
-<wxs src="../filter.wxs" module="filter" />
-<block wx:for="{{ filter.cutLine(comments, 5)) }}" wx:key="static">
-    <v-tag text="{{item.content}}" />
-</block>
-``` 
-
-[slide]
-
-# 系统常用 API
-
-[slide]
-
-## 网络请求
------
-```javascript
-wx.request({
-    url: '/api/position/add', // api url
-    method: 'post', // get、post等
-    data: { id: 1 }, // 入参
-    success: res => { // 服务器返回数据的回调，400、404、500等也会进入成功回调
-    },
-    fail: err => { // 服务器未返回数据的回调，比如断网之类的问题
-    }
-}
-```
-
-> 以下状态码都会进入 success 回调:
-<img src="/assets/img/61115.jpeg" style="max-height: 669px!important;" width="675"  />
-
-[slide]
-# 工具使用
- 
-
-[slide]
-## 添加编译模式
-------
-<img src="/assets/img/61189.jpeg" style="max-height: 669px!important;" width="675"  />
-<img src="/assets/img/61194.jpeg" style="max-height: 669px!important;" width="675"  />
-
-
-[slide]
-
-# 有赞（Vant Weapp）组件库
-------
-<img src="/assets/img/20181217132712.png"  width="160" height="160" />
-
-[slide]
-## 把 Vant Weapp 添加到项目中
-----
-* npm init {:&.rollIn}
-* npm i vant-weapp -S --production
-* 点击开发者工具中的菜单栏：工具 --> 构建 npm，编译成功后项目目录里会生成有赞组件文件<br/>
-  <img src="/assets/img/1543977130(1).png"  width="200" height="200" />
-* 在 app.json 中全局注册组件，或者在某个页面里局部注册组件：
-```javascript
-{
-    "usingComponents": {
-        "van-button": "../../miniprogram_npm/vant-weapp/button/index"
-    }
-}
-```
-[slide]
-# mpvue
------
-<img src="/assets/img/logo.png"  width="160" height="160" />
-
-[slide]
-## 初始化项目模板
-----
-
-* npm install --global vue-cli
-* vue init mpvue/mpvue-quickstart my-project
-* npm install
-* npm run dev <br/>
-<img src="/assets/img/20181217135027.png"  class="img" width="200" height="760" />
- 
-<div class="struct">项目结构对照</div> {:&.rollIn}
-
-mpvue | 原生小程序
-:-------|:------:
-App.vue | app.js、app.wxss
-app.json | app.json
-pages/ | pages/
-components/ | components/
- 
+<div class="blue-teeth-split"></div>
 <style>
-.struct {
-    padding: 30px 0;
-}
-.img {
+.wrap-20181224152030 {
     position: absolute;
-    right: -51%;
-    top: -23%;
+    float: left;
+    /* height: 600px; */
+    top: -76%;
+    right: -186%;
+}
+.img-20181224152030 {
+    min-height:600px;
+}
+.blue-teeth-split {
+    height: 245px;
+}
+
+.blue-teeth-split2 {
+    height: 47px;
+}
+</style>
+
+
+[slide class="wifi"]
+
+## Wi-Fi
+-----
+* 搜索周边的 Wi-Fi
+* 针对指定 Wi-Fi，传入密码发起连接
+* 连接 Wi-Fi 完成后跳转指定小程序
+* 连接 Wi-Fi 完成后跳转指定小程序
+<div class="column-space"></div>
+> 连接指定 Wi-Fi 仅 iOS 11 及以上版本支持，</br>Android 支持度良好
+<div  class="rollIn wrap-20181224155733">
+    <img class="builded img-20181224152030" src="/assets/img/20181224155733.png" style="display: block;margin: 33px auto;" height="500" width="750" />
+</div>
+
+<style>
+.wifi .slide-wrapper {
+    position: relative;
+    left: -16%;
+}
+.wrap-20181224155733 {
+    position: absolute;
+    float: left;
+    top: -460%;
+    right: -162%;
 }
 </style>
 
 [slide]
-## 引入 Vant Weapp
----
-* npm i vant-weapp -S --production  {:&.rollIn}
-* 把生成的组建包从 node_modules 中复制到项目根目录下的 static 文件夹下
-* 修改 webpack.base.conf.js：
-```javascript
-module: {
-    rules: [
-        {
-            test: /\.js$/,
-            include: [resolve('src'), resolve('test'), resolve('static/vant-weapp')],
-            use: [
-                'babel-loader',
-                {
-                    loader: 'mpvue-loader',
-                    options: Object.assign({checkMPEntry: true}, vueLoaderConfig)
-                },
-            ]
-        },
-    ]
+
+## NFC
+-----
+小程序提供 HCE 模式的 NFC 能力，让具有NFC功能的安卓手机用户，将手机变成门禁卡、公交卡等智能卡。用户打开小程序并贴近刷卡机，就能完成卡的识别、消费等操作了。
+<div class="column-space"></div>
+> 仅支持 Android 5.0 及以上的手机
+
+[slide]
+# 小程序的开放能力
+
+[slide]
+
+## 获取手机号
+-----
+需要用户主动触发才能发起获取手机号接口。
+<div class="column-space"></div>
+> 目前该接口针对非个人开发者，且完成了认证的小程序开放（不包含海外主体）。若用户举报较多或被发现在不必要场景下使用，微信有权永久回收该小程序的该接口权限。
+
+[slide]
+## 指纹识别认证
+> 目前支持这些机型：
+<div  class="sort">
+    <img class="" src="/assets/img/s1.png" style="display: block;margin: 33px auto;" height="550" width="400" />
+    <img class="" src="/assets/img/s2.png" style="display: block;margin: 33px auto;" height="550" width="400" />
+    <img class="" src="/assets/img/s3.png" style="display: block;margin: 33px auto;" height="550" width="400" />
+</div>
+
+<style>
+.sort {
+    display: flex;
+    flex-direction: row;
 }
-```
-* 在 app.json 中按需注册
-```javascript
-"usingComponents": {
-    "van-button": "/static/vant-weapp/button/index",
-    "van-search": "/static/vant-weapp/search/index",
-    "van-badge": "/static/vant-weapp/badge/index",
-    "van-badge-group": "/static/vant-weapp/badge-group/index"
+</style>
+
+[slide]
+## 模板消息
+-----
+* 模板推送位置：服务通知
+* 模板下发条件：用户与页面有交互行为后触发，不可使用 api 直接调用
+* 模板跳转能力：点击查看详情仅能跳转下发模板的小程序的各个页面
+<div class="column-space"></div>
+<img class="wrap-201812241557331" src="/assets/img/notice.png" height="500" width="300" />
+
+
+<style>
+
+.wrap-201812241557331 {
+    position: absolute;
+    float: left;
+    top: -84%;
+    right: -39%;
 }
-``` 
+</style>
+
+[slide]
+## 获取模板消息
+-----
+登录 https://mp.weixin.qq.com 获取模板，如果没有合适的模板，可以申请添加新模板，审核通过后可使用
+<div class="column-space"></div>
+<img class="" src="/assets/img/20181224194450.png" height="500" width="1000" />
+
+[slide]
+
+## 客服消息
+-----
+* 第一种微信控制台添加客服人员
+<div class="column-space"></div>
+<img style="margin-left: 200px;" src="/assets/img/20181224201453.png" height="500" width="1000" />
+> 优点：无需任何开发，添加即可使用<br/>
+缺点：使用端被限制，经常要登陆查看消息，容易遗漏消息、容易出现超时。
+[slide]
+
+## 客服消息
+-----
+* 第二种自有平台使用方式
+<div class="column-space"></div>
+<img class="clipboard1" src="/assets/img/clipboard1.png" height="800" width="1000" />
+
+<div class="column-space"></div>
+<div class="column-space"></div>
+<div class="column-space"></div>
+<div class="column-space"></div>
+<div class="column-space"></div>
+<div class="column-space"></div>
+
+<div class="column-space"></div>
+<div class="column-space"></div>
+<style>
+.clipboard1 {
+    position: absolute;
+    float: left;
+    top: -73%;
+    right: -146%;
+}
+</style>
+[slide]
+
+## 卡券
+-----
+> 小程序卡券接口支持在小程序中领取/查看/使用公众号 AppId 创建的会员卡、票、券（含通用卡）。
+ 
+
+
+[slide]
+
+## 生成任意页面的二维码
+-----
+* 适用于需要的码数量较少的业务场景：<br/>
+  可接受 path 参数较长，但生成个数受限。<br/>
+  <div class="column-space"></div>
+* 适用于需要的码数量极多的业务场景：<br/>
+可接受页面参数较短，生成个数不受限。<br/>
+<div class="column-space"></div>
+* 适用于需要的码数量较少的业务场景：<br/>
+可接受 path 参数较长，生成个数受限。 
+<img style="    position: absolute;
+    top: 10%;
+    right: -108%;" src="/assets/img/qrcode.png" height="300" width="600" />
+
+[slide]
+
+## 数据分析
+
+
 [slide]
 
 # 谢谢收看
