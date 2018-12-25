@@ -1,4 +1,4 @@
-title: 微信小程序的用途和开发流程
+title: 微信小程序的用途和开发、发布流程
 speaker: 吕士杰
 url: https://github.com/ksky521/nodeppt
 transition: slide3
@@ -10,7 +10,7 @@ date: 2018年12月23日
 [slide]
 # 微信小程序
 <img src="/assets/img/logo.jpg" style="display: block;margin: 33px auto;"width="120" height="120" />
-经过两年的发展，已经有了新的硬件和开发能力。用户通过扫一扫、搜一下或发现周边小程序即可使用，许多城市实现了支持地铁、公交服务。
+经过两年的发展，已经有了新的硬件和开放能力。用户通过扫一扫、搜一下或发现周边小程序即可使用，许多城市实现了支持地铁、公交服务。
 
 <style>
 .column-space {
@@ -94,11 +94,10 @@ date: 2018年12月23日
 * 搜索周边的 Wi-Fi
 * 针对指定 Wi-Fi，传入密码发起连接
 * 连接 Wi-Fi 完成后跳转指定小程序
-* 连接 Wi-Fi 完成后跳转指定小程序
 <div class="column-space"></div>
 > 连接指定 Wi-Fi 仅 iOS 11 及以上版本支持，</br>Android 支持度良好
 <div  class="rollIn wrap-20181224155733">
-    <img class="builded img-20181224152030" src="/assets/img/20181224155733.png" style="display: block;margin: 33px auto;" height="500" width="750" />
+    <img class="builded" src="/assets/img/20181224155733.png" style="display: block;margin: 33px auto;" height="400" width="750" />
 </div>
 
 <style>
@@ -118,7 +117,7 @@ date: 2018年12月23日
 
 ## NFC
 -----
-小程序提供 HCE 模式的 NFC 能力，让具有NFC功能的安卓手机用户，将手机变成门禁卡、公交卡等智能卡。用户打开小程序并贴近刷卡机，就能完成卡的识别、消费等操作了。
+小程序提供 HCE 模式的 NFC 能力，让具有 NFC 功能的安卓手机用户，将手机变成门禁卡、公交卡等智能卡。用户打开小程序并贴近刷卡机，就能完成卡的识别、消费等操作了。
 <div class="column-space"></div>
 > 仅支持 Android 5.0 及以上的手机
 
@@ -131,7 +130,7 @@ date: 2018年12月23日
 -----
 需要用户主动触发才能发起获取手机号接口。
 <div class="column-space"></div>
-> 目前该接口针对非个人开发者，且完成了认证的小程序开放（不包含海外主体）。若用户举报较多或被发现在不必要场景下使用，微信有权永久回收该小程序的该接口权限。
+> 目前该接口针对非个人开发者，且完成了小程序开放认证（不包含海外主体）。若用户举报较多或被发现在不必要场景下使用，微信有权永久回收该小程序的该接口权限。
 
 [slide]
 ## 指纹识别认证
@@ -154,7 +153,7 @@ date: 2018年12月23日
 -----
 * 模板推送位置：服务通知
 * 模板下发条件：用户与页面有交互行为后触发，不可使用 api 直接调用
-* 模板跳转能力：点击查看详情仅能跳转下发模板的小程序的各个页面
+* 模板跳转到小程序：点击查看详情能跳转下发模板的小程序的各个页面
 <div class="column-space"></div>
 <img class="wrap-201812241557331" src="/assets/img/notice.png" height="500" width="300" />
 
@@ -184,7 +183,7 @@ date: 2018年12月23日
 <div class="column-space"></div>
 <img style="margin-left: 200px;" src="/assets/img/20181224201453.png" height="500" width="1000" />
 > 优点：无需任何开发，添加即可使用<br/>
-缺点：使用端被限制，经常要登陆查看消息，容易遗漏消息、容易出现超时。
+缺点：经常要登陆查看消息，容易遗漏消息、容易出现超时。
 [slide]
 
 ## 客服消息
@@ -214,9 +213,16 @@ date: 2018年12月23日
 
 ## 卡券
 -----
-> 小程序卡券接口支持在小程序中领取/查看/使用公众号 AppId 创建的会员卡、票、券（含通用卡）。
+<div class="column-space"></div><div class="column-space"></div>
+> 小程序卡券接口支持在小程序中领取/查看/使用公众号 AppId 创建的会员卡、票、券（含通用卡）。只有认证小程序才能使用卡券接口。
  
-
+<img style=" 
+        position: absolute;
+    min-height: 700px;
+    right: -48%;
+    top: 10%;
+}
+    right: -108%;" src="/assets/img/20181225162008.jpg"   width="400" />
 
 [slide]
 
@@ -236,8 +242,234 @@ date: 2018年12月23日
 
 [slide]
 
-## 数据分析
 
+
+[slide]
+## 附近的小程序
+-----
+小程序可创建附近地点的小程序，提供一下操作：<br/>
+* 添加地点
+ * 经营资质主体	，必填
+ * 经营资质证件号，必填	
+ * 经营资质地址，必填
+* 查看地点列表
+    * 附近地点 ID	
+    * 资质证件地址	
+    * 资质证件证件号	
+    * 地点审核状态	
+    * 审核失败原因
+* 删除地点
+<div class="column-space"></div>
+> 使用前需要先调高附近地点额度。 申请方式：下载 《调高地点额度申请表》，填写后发送至 placeofminiprogram@qq.com。
+<img style="position: absolute; 
+    top: -680%;
+    min-height: 500px;
+    right: -39%;" src="/assets/img/20181225092352.jpg" height="1208" width="300" />
+
+[slide]
+
+## 
+-----
+<div class="comp-list">
+    
+    <div class="audi-video-comp">
+        <div class="audi-video-comp-wrap">
+            <div>音频组件</div>
+            <img src="/assets/img/20181225093938.png" height="450" width="300" />
+        </div>
+        <div class="audi-video-comp-wrap">
+            <div>视频组件</div>
+            <img src="/assets/img/20181225094442.png" height="250" width="300" />
+        </div>
+
+    </div>
+
+    <div class="camera-comp-wrap">
+        <div>拍摄组件</div>
+        <img src="/assets/img/20181225095923.png" height="450" width="300" />
+    </div>
+    <div class="map-comp-wrap">
+        <div>地图组件</div>
+        <img src="/assets/img/20181225101701.png" height="450" width="300" />
+    </div>
+    <div class="wv-comp-wrap">
+        Web View：<br/><br/>个人类型小程序暂不支持使用
+    </div>
+    <div class="canvase-comp-wrap">
+        canvas：<br/><br/>使用 h5 原生 api 绘制动效和图形
+    </div>
+</div>
+<style>
+.canvase-comp-wrap {
+    
+    position: absolute;
+    bottom: 3%;
+    width: 150px;
+    right: -31%;
+}
+.wv-comp-wrap {
+        position: absolute;
+    bottom: 16%;
+    width: 170px;
+    left: 5%;
+}
+.map-comp-wrap{
+    position: absolute;
+    right: -29%;
+    top: 6%;
+}
+.comp-list {
+    display: flex;
+    flex-direction: column;
+}
+.audi-video-comp {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+            position: absolute;
+    top: 4%;
+    width: 984px;
+}
+.audi-video-comp-wrap {
+    display: flex;
+    flex-direction: column;
+    
+}
+.audi-video-comp-wrap div,.camera-comp-wrap div,.map-comp-wrap div {
+    margin-bottom: 20px;
+}
+.camera-comp-wrap {
+        position: absolute;
+    top: 44%;
+    left: 50%;
+}
+</style>
+
+[slide]
+## 需要资格审核的组件
+-----
+* 实时音视频播放<br>
+* 实时音视频录制<br>
+<div class="column-space"></div>
+> 暂只针对国内主体,社交、教育和医疗等类目的小程序开放，需要先通过类目审核
+
+[slide]
+# 开发和发布流程 
+
+[slide]
+## 注册小程序的开发者账号 
+> https://mp.weixin.qq.com/wxopen/waregister?action=step1
+<div class="column-space"></div>
+<img src="/assets/img/20181225110805.png" height="800" width="850" />
+
+[slide]
+
+## 选择主体类型
+-----
+下一步 >
+<div class="column-space"></div>
+<img src="/assets/img/20181225111824.png" style="min-height: 700px;"  width="700" />
+
+[slide]
+
+## 确认主体类型
+-----
+下一步 >
+<div class="column-space"></div>
+<img src="/assets/img/20181225113043.png" style="min-height: 700px;"  width="700" />
+
+[slide]
+## 进入开发者后台，添加一个小程序
+-----
+<img src="/assets/img/20181225115158.png" style="min-height: 500px;"  width="1000" />
+
+[slide]
+## 获取小程序 ID
+-----
+<img src="/assets/img/20181225121326.png" style="min-height: 500px;"  width="1000" />
+
+[slide]
+## 使用开发者工具开发和调试小程序
+-----
+<img src="/assets/img/20181225130458.png" style="min-height: 400px;"  width="350" />
+
+[slide]
+## 服务器域名配置
+-----
+> 每个微信小程序需要事先设置一个通讯域名，才可以和指定的域名进行网络通信。包括：
+* HTTPS 请求（request）
+* 上传文件（uploadFile）
+* 下载文件（downloadFile) 
+* WebSocket 通信（connectSocket）
+
+[slide]
+## 域名配置的限制
+-----
+* 域名只支持 https (request、uploadFile、downloadFile) 和 wss (connectSocket) 协议
+* 域名必须经过 ICP 备案
+* 小程序内会对服务器域名使用的 HTTPS 证书进行校验，如果校验失败，则请求不能成功发起。建议按照最高标准进行证书配置。
+<div class="column-space"></div>
+> 在微信开发者工具中，可以临时开启 开发环境不校验请求域名、TLS版本及HTTPS证书 选项，跳过服务器域名的校验。此时，在微信开发者工具中及手机开启调试模式时，不会进行服务器域名的校验。
+
+[slide]
+## 提交审核
+-----
+> 开发完可以在管理员后台提交审核，审核的代码需要经过测试，如果反复审核不过会影响再次审核通过的时间<br/>
+<img src="/assets/img/20181225140646.png" style="min-height: 200px;"  width="850" /><br/ >
+
+[slide]
+## 申请测试号
+-----
+<img src="/assets/img/20181225134109.png" style="min-height: 400px;"  width="350" /><br/ >
+[slide]
+<img src="/assets/img/20181225134444.png" style="min-height: 400px;"  width="350" /><br/ >
+<div class="column-space"></div>
+扫码登录后，即可查看到已为自己分配好的测试帐号信息。<br/ >
+[slide]
+<img src="/assets/img/sandbox-create-project.jpg" style="min-height: 400px;"  width="350" />
+<div class="column-space"></div>
+在得到了测试号的帐号信息之后，可以在开发者工具中使用此帐号信息创建项目进行开发。
+
+[slide]
+# 运营
+
+[slide]
+## 数据分析
+-----
+* 日趋势
+* 周趋势
+* 月趋势
+    * 日期	
+    * 打开次数	
+    * 访问次数	
+    * 访问人数	
+    * 新用户数	
+    * 人均停留时长	
+* 日留存
+* 周留存
+* 月留存
+    * 时间	
+    * 新增用户留存	
+    * 活跃用户留存
+
+[slide]
+
+## 数据分析
+-----
+* 访问页面
+    * 页面路径	
+    * 访问次数	
+    * 访问人数	
+    * 次均停留时长	
+    * 进入页次数	
+    * 退出页次数	
+* 用户画像
+    * 省份	
+    * 城市
+    * 性别	
+    * 终端类型	
+    * 机型，如苹果 iPhone 6，OPPO R9 等	
+    * 年龄
 
 [slide]
 
