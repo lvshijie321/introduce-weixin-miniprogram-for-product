@@ -241,10 +241,6 @@ date: 2018年12月23日
     right: -108%;" src="/assets/img/qrcode.png" height="300" width="600" />
 
 [slide]
-
-
-
-[slide]
 ## 附近的小程序
 -----
 小程序可创建附近地点的小程序，提供一下操作：<br/>
